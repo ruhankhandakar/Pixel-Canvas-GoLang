@@ -6,6 +6,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/widget"
 	"ruhan.tech/pixl/apptype"
 )
@@ -87,4 +88,10 @@ func NewPxCanvas(state *apptype.State, config apptype.PxCanvasConfig) *PxCanvas 
 	pxCanvas.PixelData = NewBlankImage(pxCanvas.PxCols, config.PxRows, color.NRGBA{128, 128, 128, 255})
 	pxCanvas.ExtendBaseWidget(pxCanvas)
 	return pxCanvas
+}
+
+func (pxCanvas *PxCanvas) TryPan(previousCoord *fyne.PointEvent, ev *desktop.MouseEvent) {
+	if previousCoord != nil && ev.Button == desktop.MouseButtonTertiary {
+		pxCanvas.Pan(*previousCoord, ev.PointEvent)
+	}
 }
